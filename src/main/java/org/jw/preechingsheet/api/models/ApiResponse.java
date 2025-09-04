@@ -62,5 +62,12 @@ public class ApiResponse <T> {
 				.message(message)
 				.build();
 	}
+
+	public static ApiResponse<Void> error(String message) {
+		return ApiResponse.<Void>builder()
+				.success(false)
+				.message(message)
+				.build();
+	}
 }
 

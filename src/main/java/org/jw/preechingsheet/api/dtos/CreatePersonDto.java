@@ -23,4 +23,6 @@ public class CreatePersonDto {
 	@NotNull
 	@JsonProperty("role")
 	private MinistryRoleEnum role;
+	
+	private boolean active;
 }

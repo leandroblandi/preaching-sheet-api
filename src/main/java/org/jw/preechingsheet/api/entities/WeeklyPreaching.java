@@ -32,9 +32,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "weekly_preachings")
 public class WeeklyPreaching {
 	@Id
-	@JsonProperty("uuid")
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private String uuid;
+	@JsonProperty("id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@JsonProperty("preaching_events")
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })

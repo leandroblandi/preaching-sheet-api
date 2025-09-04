@@ -1,5 +1,8 @@
 package org.jw.preechingsheet.api.controllers;
 
+import java.util.Optional;
+
+import org.jw.preechingsheet.api.annotations.RateLimited;
 import org.jw.preechingsheet.api.dtos.CreatePreachingDto;
 import org.jw.preechingsheet.api.entities.PreachingEvent;
 import org.jw.preechingsheet.api.models.ApiResponse;
@@ -30,7 +33,14 @@ public class PreachingController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse<Optional<PreachingEvent>>> find(@RequestParam long id) {
+		ApiResponse<Optional<PreachingEvent>> response = ApiResponse.ok(service.find(id));
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+	
 	@PostMapping
+	@RateLimited
 	public ResponseEntity<ApiResponse<PreachingEvent>> create(@Valid @RequestBody CreatePreachingDto dto) {
 		PreachingEvent created = service.create(dto);
 		ApiResponse<PreachingEvent> response = ApiResponse.ok(created);

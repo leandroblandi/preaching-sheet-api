@@ -18,7 +18,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,15 +31,13 @@ import lombok.NoArgsConstructor;
 @Table(name = "preachings")
 public class PreachingEvent {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@JsonProperty("uuid")
-	private String uuid;
+	@JsonProperty("id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
-	@NotNull
 	@JsonProperty("date")
 	private LocalDate date;
 	
-	@NotNull
 	@JsonProperty("time")
 	private LocalTime time;
 	
@@ -52,11 +49,9 @@ public class PreachingEvent {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	private Person assignee;
 	
-	@NotBlank
 	@JsonProperty("group")
 	private String preachingGroup;
 	
-	@NotBlank
 	@JsonProperty("territories")
 	private String territories;
 	
@@ -67,4 +62,8 @@ public class PreachingEvent {
 	@UpdateTimestamp
 	@JsonProperty("update_timestamp")
 	private LocalDateTime updatedAt;
+	
+	@JsonProperty("is_special_event")
+	@Builder.Default
+	private boolean specialEvent = false;
 }

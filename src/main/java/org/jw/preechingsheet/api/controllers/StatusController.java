@@ -1,5 +1,6 @@
 package org.jw.preechingsheet.api.controllers;
 
+import org.jw.preechingsheet.api.annotations.RateLimited;
 import org.jw.preechingsheet.api.models.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatusController {
 	
 	@GetMapping
+	@RateLimited
 	public ResponseEntity<ApiResponse<Void>> status() {
 		ApiResponse<Void> response = ApiResponse.info("Working!");
 		return ResponseEntity.status(HttpStatus.OK).body(response);

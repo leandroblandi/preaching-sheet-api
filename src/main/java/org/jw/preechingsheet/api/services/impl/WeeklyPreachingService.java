@@ -8,7 +8,10 @@ import java.util.Optional;
 import org.jw.preechingsheet.api.dtos.CreateWeeklyPreachingDto;
 import org.jw.preechingsheet.api.entities.PreachingEvent;
 import org.jw.preechingsheet.api.entities.WeeklyPreaching;
+import org.jw.preechingsheet.api.exceptions.impl.NotValidParamException;
+import org.jw.preechingsheet.api.models.FileResponse;
 import org.jw.preechingsheet.api.repositories.IWeeklyPreachingRepository;
+import org.jw.preechingsheet.api.services.IExcelPreachingService;
 import org.jw.preechingsheet.api.services.IPreachingService;
 import org.jw.preechingsheet.api.services.IWeeklyPreachingService;
 import org.jw.preechingsheet.api.utils.DateUtils;
@@ -20,23 +23,36 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WeeklyPreachingService implements IWeeklyPreachingService {
-	private static final int DEFAULT_PAGE_SIZE = 5;
 
 	@Autowired
 	private IPreachingService preachingService;
 	
 	@Autowired
+	private IExcelPreachingService excelPreachingService;
+	
+	@Autowired
 	private IWeeklyPreachingRepository weeklyPreachingRepository;
 	
 	@Override
-	public Optional<WeeklyPreaching> find(String uuid) {
-		return weeklyPreachingRepository.findById(uuid);
+	public Optional<WeeklyPreaching> find(Long id) {
+		return weeklyPreachingRepository.findById(id);
 	}
 
 	@Override
-	public Page<WeeklyPreaching> findAll(int page) {
-		Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+	public Page<WeeklyPreaching> findAll(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
 		return weeklyPreachingRepository.findAll(pageable);
+	}
+	
+	public FileResponse export(Long id) {
+		
+		Optional<WeeklyPreaching> preachingOptional = find(id);
+		
+		if (preachingOptional.isEmpty()) {
+			throw new NotValidParamException("person_id");
+		}
+		
+		return excelPreachingService.create(preachingOptional.get());
 	}
 
 	@Override
@@ -62,7 +78,7 @@ public class WeeklyPreachingService implements IWeeklyPreachingService {
 	}
 
 	@Override
-	public void disable(String uuid) {
+	public void disable(Long id) {
 		// TODO Auto-generated method stub
 	}
 }

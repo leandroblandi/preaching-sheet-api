@@ -31,11 +31,12 @@ import lombok.NoArgsConstructor;
 public class Person {
 	
 	@Id
-	@JsonProperty("uuid")
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private String uuid;
+	@JsonProperty("id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@NotBlank
+	@JsonProperty("full_name")
 	private String fullName;
 	
 	@Builder.Default
@@ -45,6 +46,10 @@ public class Person {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private MinistryRoleEnum role = MinistryRoleEnum.PUBLISHER;
+	
+	@Builder.Default
+	@JsonProperty("preaching_count")
+	private int preachingCount = 0;
 	
 	@CreationTimestamp
 	@JsonProperty("created_at")
